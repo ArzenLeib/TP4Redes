@@ -7,7 +7,7 @@
   <title>Trabajo Practico 4 Coloquio</title>
   <style>
     /* Ocultar el título y la tabla inicialmente */
-    #requestsTitle, #data-table, .combobox {
+    #requestsTitle, #data-table, #combobox {
       display: none;
     }
   </style>
@@ -32,7 +32,7 @@
 
   <h2 id="requestsTitle"><%= fileName %></h2>
 
-  <div class = "combobox">
+  <div id = "combobox">
     <label for="range">Elige la Hoja:</label>
     <select name="range" id="range" required>
     </select>
@@ -151,6 +151,7 @@
       document.getElementById('requestsTitle').textContent = `${updatedFileName}`;
       document.getElementById('requestsTitle').style.display = 'block';
       document.getElementById('data-table').style.display = 'table';
+      document.getElementById('combobox').style.display = 'contents';
     }
 
     document.getElementById("promptForm").addEventListener("submit", async (e) => {
