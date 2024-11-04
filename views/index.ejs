@@ -19,7 +19,7 @@
   <div>
     <label for="spreadsheetId">ID Sheet</label>
     <input type="text" id="spreadsheetId" name="spreadsheetId" required />
-    <button type="button" id="loadButton">Load</button>
+    <button type="button" id="loadButton">Cargar</button>
   </div>
 
   <form id="promptForm">
@@ -60,7 +60,7 @@
   </table>
 
   <script>
-    let newSheetData = []; // Definir `newSheetData` fuera de las funciones para que esté accesible globalmente
+    let newSheetData = [];
 
     document.getElementById('loadButton').addEventListener('click', async () => {
       const spreadsheetId = document.getElementById('spreadsheetId').value;
@@ -70,7 +70,6 @@
         return;
       }
 
-      // Solicitar datos de la hoja, incluyendo nombres de las hojas
       const response = await fetch(`/cargar-sheet?spreadsheetId=${spreadsheetId}`);
       if (!response.ok) {
         alert('Error al cargar los datos.');
@@ -79,9 +78,8 @@
 
       const { sheetData, fileName, sheetNames } = await response.json();
 
-      // Actualizar el combo box con los nuevos nombres de hojas
       const rangeSelect = document.getElementById('range');
-      rangeSelect.innerHTML = ''; // Limpiar opciones existentes
+      rangeSelect.innerHTML = '';
 
       sheetNames.forEach(sheetName => {
         const option = document.createElement('option');
@@ -90,14 +88,12 @@
         rangeSelect.appendChild(option);
       });
 
-      // Seleccionar el primer rango si está vacío
       if (!rangeSelect.value && sheetNames.length > 0) {
         rangeSelect.value = sheetNames[0];
       }
 
-      // Cargar los datos de la hoja seleccionada
       const selectedRange = rangeSelect.value;
-      await loadSheetData(spreadsheetId, selectedRange); // Cargar datos iniciales
+      await loadSheetData(spreadsheetId, selectedRange);
     });
 
     document.getElementById("range").addEventListener("change", async (event) => {
@@ -109,7 +105,7 @@
         return;
       }
 
-      await loadSheetData(spreadsheetId, selectedRange); // Cargar datos de la hoja seleccionada
+      await loadSheetData(spreadsheetId, selectedRange);
     });
 
     async function loadSheetData(spreadsheetId, range) {
@@ -122,13 +118,12 @@
       const { sheetData: updatedSheetData, fileName: updatedFileName } = await dataResponse.json();
       newSheetData = updatedSheetData; // Actualizar newSheetData
 
-      // Actualizar la tabla
       const tbody = document.querySelector('#data-table tbody');
-      tbody.innerHTML = ''; // Limpiar la tabla existente 
+      tbody.innerHTML = '';
 
       if (newSheetData.length > 0) {
         const thead = document.querySelector('#data-table thead tr');
-        thead.innerHTML = ''; // Limpiar encabezados
+        thead.innerHTML = '';
 
         newSheetData[0].forEach(header => {
           const th = document.createElement('th');
@@ -161,7 +156,7 @@
       const spreadsheetId = document.getElementById('spreadsheetId').value;
       const selectedRange = document.getElementById("range").value;
 
-      // Convertir `newSheetData` a cadena JSON e incluirlo en el prompt
+      // Convertir newSheetData a cadena JSON e incluirlo en el prompt
       const sheetDataText = JSON.stringify(newSheetData);
       const combinedPrompt = `${promptText}\n\n Usando el siguiente dataset:\n${sheetDataText} 
       Genera un dataset EN TEXTO usando [[]], respetá la primera fila, no expliques nada más, solo quiero el array en texto.
@@ -178,7 +173,7 @@
 
       const data = await response.json();
       
-      alert("Generated text: " + data.text); // Muestra el resultado
+      alert("Texto Generado por la IA: " + data.text);
     });
   </script>
 </body>

@@ -34,12 +34,12 @@ app.get('/login', (req, res) => {
     if (req.oidc.isAuthenticated()) {
        res.redirect('/');
      } else {
-        res.render('login'); // Renderiza la vista login.ejs cuando el usuario no está autenticado
+        res.render('login');
     }
 });
 
 app.get('/logout', (req, res) => {
-    req.oidc.logout(); // Llama al método de logout de Auth0 para cerrar la sesión
+    req.oidc.logout();
 });
 
 async function addSheetAndInsertData(spreadsheetId, sheetTitle, data) {
@@ -75,16 +75,15 @@ async function addSheetAndInsertData(spreadsheetId, sheetTitle, data) {
         range: `${sheetTitle}`,
         valueInputOption: 'USER_ENTERED',
         resource: {
-            values: data // Ajusta esto según el formato que necesites
+            values: data
         }
     };
 
     await sheets.spreadsheets.values.update(updateRequest);
 }
 
-// Actualiza la ruta /generate
 app.post("/generate", async (req, res) => {
-    const { prompt, spreadsheetId } = req.body; // Asegúrate de que también recibes el ID del spreadsheet
+    const { prompt, spreadsheetId } = req.body;
 
     console.log(prompt)
 
@@ -100,7 +99,7 @@ app.post("/generate", async (req, res) => {
         const newSheetTitle = `Generado ${new Date().toISOString()}`;
         await addSheetAndInsertData(spreadsheetId, newSheetTitle, text); // Pasar el ID y el título de la hoja
 
-        res.json({ text }); // Devuelve el texto generado
+        res.json({ text });
     } catch (error) {
         console.error("Error al generar contenido:", error);
         res.status(500).json({ error: "Error al generar contenido" });
@@ -154,8 +153,8 @@ function getCredentials() {
 app.get("/", async (req, res) => {
 
     if (req.oidc.isAuthenticated()){
-        const sheetNames = []; // Inicialmente vacío
-        res.render("index", { sheetNames, fileName: '', sheetData: [] }); // Pasar nombres de hojas vacíos y otros vacíos
+        const sheetNames = [];
+        res.render("index", { sheetNames, fileName: '', sheetData: [] });
     } else {
         res.redirect('/login');
     }
@@ -171,7 +170,7 @@ app.get("/cargar-sheet", async (req, res) => {
 
         // Si el rango no se proporciona, seleccionar el primero de sheetNames
         if (!range && sheetNames.length > 0) {
-            range = sheetNames[0]; // Seleccionar el primer nombre de hoja
+            range = sheetNames[0];
         }
 
         // Obtener datos de la hoja
@@ -193,7 +192,7 @@ app.get("/cargar-sheet", async (req, res) => {
 
         const fileName = response.data.properties.title; // Obtener el nombre del archivo
 
-        res.json({ sheetData, fileName, sheetNames }); // Retornar datos de la hoja, el nombre del archivo y los nombres de las hojas
+        res.json({ sheetData, fileName, sheetNames });
     } catch (error) {
         console.error('Error al cargar la hoja de cálculo:', error);
         res.status(500).send('Error al cargar los datos');
