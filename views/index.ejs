@@ -7,15 +7,14 @@
   <title>Trabajo Practico 4 Coloquio</title>
   <style>
     /* Ocultar el título y la tabla inicialmente */
-    #requestsTitle, #data-table {
+    #requestsTitle, #data-table, .combobox {
       display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Trabajo Practico 4 Coloquio</h1>
-
   <button onclick="window.location.href='/logout'">Logout</button>
+  <h1>Trabajo Practico 4 Coloquio</h1>
   
   <div>
     <label for="spreadsheetId">ID Sheet</label>
@@ -28,16 +27,16 @@
       <label for="request">Prompt</label>
       <textarea name="request" id="request" cols="30" rows="10" required></textarea>
     </div>
-    <div>
-      <label for="range">Elige la Hoja:</label>
-      <select name="range" id="range" required>
-        <!-- Las opciones se llenarán dinámicamente -->
-      </select>
-    </div>
-    <button type="submit">Submit</button>
+    <button type="submit">Enviar Prompt</button>
   </form>
 
   <h2 id="requestsTitle"><%= fileName %></h2>
+
+  <div class = "combobox">
+    <label for="range">Elige la Hoja:</label>
+    <select name="range" id="range" required>
+    </select>
+  </div>
 
   <table id="data-table">
     <thead>
