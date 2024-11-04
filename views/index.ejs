@@ -159,12 +159,8 @@
       // Convertir newSheetData a cadena JSON e incluirlo en el prompt
       const sheetDataText = JSON.stringify(newSheetData);
       const combinedPrompt = `${promptText}\n\n Usando el siguiente dataset:\n${sheetDataText} 
-        Genera un array de strings en formato JSON, donde cada string representa una fila del dataset. Utiliza corchetes cuadrados para delimitar el array y comillas dobles para encerrar cada string. 
-        Ejemplo:
-        [
-          ["Columna1", "Columna2", "Columna3"],
-          ["Valor1", "Valor2", "Valor3"]
-        ]`;
+      Genera un dataset usando el mismo formato que envié no expliques nada más.
+      ` + " sin utilizar este formato ```\n";
 
       // Enviar el prompt combinado al backend
       const response = await fetch("/generate", {
