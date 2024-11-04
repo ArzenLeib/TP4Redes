@@ -157,10 +157,8 @@
       const selectedRange = document.getElementById("range").value;
 
       // Convertir newSheetData a cadena JSON e incluirlo en el prompt
-      const sheetDataText = newSheetData;
-      const combinedPrompt = `${promptText}\n\n Usando el siguiente dataset:\n${sheetDataText} 
-      Genera un dataset EN TEXTO usando [[]], respetá la primera fila, no expliques nada más, solo quiero el array en texto.
-      ` + " sin utilizar ```\n";
+      const sheetDataText = JSON.stringify(newSheetData);
+      const combinedPrompt = `${promptText}\n\nUsando el siguiente dataset:\n${sheetDataText}\nGenera un dataset EN TEXTO usando [[]], respetá la primera fila, no expliques nada más, solo quiero el array en texto sin utilizar \`\`\`\n`;
 
       // Enviar el prompt combinado al backend
       const response = await fetch("/generate", {
