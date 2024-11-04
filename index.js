@@ -1,10 +1,12 @@
 const express = require("express");
 const { google } = require("googleapis");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const path = require('path');
 require("dotenv").config();
 
 const app = express();
 
+app.set('views', path.join(__dirname, 'views'));
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
@@ -285,4 +287,4 @@ app.post("/", async (req, res) => {
   res.render("index", { sheetData: sheetData, sheetNames: await getSheetNames(spreadsheetId) }); // Actualizar la vista
 });
 
-app.listen(4200, () => console.log("corriendo en 1337"));
+app.listen(1337, () => console.log("corriendo en 1337"));
