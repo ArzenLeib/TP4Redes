@@ -91,15 +91,21 @@ app.post("/generate", async (req, res) => {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const result = await model.generateContent(prompt);
         const response = await result.response;
-        console.log(response.text())
-        
-        const text = JSON.parse(response.text());
+        let text = response.text();
+        console.log(text)
+
+        text = text.replace(/(^```|```$)/g, '').trim();
+
+        text = text.replace(/^json/, '');
+        console.log(text)
+
+        const textoParseado = JSON.parse(text);
         
         // Crear una nueva hoja y agregar el texto generado
         const newSheetTitle = `Generado ${new Date().toISOString()}`;
-        await addSheetAndInsertData(spreadsheetId, newSheetTitle, text); // Pasar el ID y el título de la hoja
+        await addSheetAndInsertData(spreadsheetId, newSheetTitle, textoParseado); // Pasar el ID y el título de la hoja
 
-        res.json({ text });
+        res.json({ textoParseado });
     } catch (error) {
         console.error("Error al generar contenido:", error);
         res.status(500).json({ error: "Error al generar contenido" });
